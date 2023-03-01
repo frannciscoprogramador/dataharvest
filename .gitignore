@@ -1,2 +1,11 @@
 src/resources/
 .idea
+src/main/config/__pycache__/
+src/main/config/__pycache__/
+src/main/config/__pycache__/
+src/main/config/__pycache__/
+src/main/config/__pycache__/
+src/main/steps/__pycache__/
+src/main/steps/__pycache__/
+src/main/utils/__pycache__/
+src/main/utils/__pycache__/

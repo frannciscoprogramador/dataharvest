@@ -1,5 +1,5 @@
 BASE_URL = 'https://www.instagram.com/'
-PROFILES = ['']
+PROFILES = ['krisdanesa.amaro', 'clauzamoraaa', 'maluheros_', 'lili.neyra']
 USERNAMES = ['testunit_20203', 'holamundotest']
 PASSWORDS = ['hola mundo 2022', 'hola muudno 2023']
 GENERAL_WAITING_TIME = 2
