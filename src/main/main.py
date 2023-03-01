@@ -15,14 +15,14 @@ if __name__ == '__main__':
         exists_profile = sql.check_profile_exists(profile)
         if not exists_profile:
             sql.insert_profile(profile)
-            logger.info(f'the insert was created for: {profile}')
-        logger.info(f'the insert already exists for: {profile}')
         edge.open(f'{BASE_URL}{profile}')
+        logger.info('step stories')
         try:
             stories.access_store(RESOURCES, profile, DIV_STORES)
         except Exception as e:
             logger.info(f"An error occurred to stories: {e}")
         edge.open(f'{BASE_URL}{profile}')
+        logger.info('step all stories')
         try:
             div_css_all_stories = stories.first_featured_stores()
             if div_css_all_stories:

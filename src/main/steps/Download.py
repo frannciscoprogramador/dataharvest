@@ -36,13 +36,12 @@ class Download:
                         if '720w' in url:
                             img_url_1080w = url.split(' ')[0]
                             break
-                    self.logger.info('a download was prevented because it already exists')
                 if img_url_1080w:
                     img_file = requests.get(img_url_1080w)
                     name = increment_filename(path_file)
                     open(f"{name}", "wb").write(img_file.content)
                     self.sql.insert_src(profile, img_url_1080w)
-                    self.logger.info(f'an insert was generated for {profile} type img {img_url_1080w}')
+                    self.logger.info(f'download img: {img_url_1080w}')
             except Exception as e:
                 self.logger.info(f"An error occurred while making the request to img: {e}")
 
@@ -59,17 +58,17 @@ class Download:
                     with open(name, 'wb') as f:
                         f.write(response.content)
                         self.sql.insert_src(profile, src_url)
-                        self.logger.info(f'download {src_url}')
+                        self.logger.info(f'download video: {src_url}')
                 except Exception as e:
                     exists_blob = True
                     self.logger.info(f"An error occurred while making the request to video: {e}")
-            self.logger.info('a download was prevented because it already exists')
+            else:
+                self.logger.info('exists file')
         if exists_blob:
             actual = self.web_driver.current_url()
             self.web_driver.refresh()
             time.sleep(GENERAL_WAITING_TIME)
-            btn_view_stories = self.web_driver.by_css_selector('button._acan._acap._acau._acav._aj1-',
-                                                               GENERAL_EXPLICIT_WAIT_TIME)
+            btn_view_stories = self.web_driver.by_css_selector('button._acan._acap._acau._acav._aj1-', GENERAL_EXPLICIT_WAIT_TIME)
             if btn_view_stories:
                 btn_view_stories.click()
                 self.pause_store()

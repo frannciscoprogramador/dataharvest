@@ -21,10 +21,14 @@ class Stories:
         self.pause_anti_bot = PAUSE_ANTI_BOT
 
     def pause_store(self):
-        play_button = self.web_driver.by_css_selector('svg._ab6-[aria-label]', self.general_wait_time)
-        aria_label = play_button.get_attribute('aria-label')
-        if aria_label == 'Pause':
-            play_button.click()
+        try:
+            play_button = self.web_driver.by_css_selector('svg._ab6-[aria-label]', self.general_wait_time)
+            aria_label = play_button.get_attribute('aria-label')
+            if aria_label == 'Pause':
+                play_button.click()
+        except Exception as e:
+            self.logger.info(f"An error occurred to def pause_store: {e}")
+            pass
 
     def press_next_store_button(self):
         button = self.web_driver.by_css_selector('button._ac0d', NEXT_STORIES_BUTTON)
@@ -69,10 +73,10 @@ class Stories:
     def obtain_data_and_download(self, profile, resources):
         name_store = self.web_driver.by_css_selector(self.div_storage_name, self.stores_timeout)
         if name_store and name_store.text == profile:
-            self.logger.info(f'the story has a name: {name_store.text}')
+            self.logger.info(f'stories name: {name_store.text}')
             path = f'{resources}/{profile}/{self.stores}/'
         else:
-            self.logger.info(f'the story has a name: {name_store.text}')
+            self.logger.info(f'stories name: {name_store.text}')
             path = f'{resources}/{profile}/{self.stores}/{name_store.text}/'
         create_folder_if_not_exists(path)
         path_file = self.name_file(path)
@@ -80,27 +84,22 @@ class Stories:
 
     def access_store(self, resources: str, profile: str, div_store: str):
         stores = self.web_driver.by_css_selector(div_store, self.stores_timeout)
-        featured_stories = self.web_driver.by_all_css_selector('span.x1lliihq.x193iq5w.x6ikm8r.x10wlt62.xlyipyv.xuxw1ft', self.general_wait_time)
-        len_featured_stories = 1
         if stores:
             stores.click()
+            time.sleep(self.general_wait_time)
             self.pause_store()
             btn_next_stories = self.press_next_store_button()
             if btn_next_stories:
-                if featured_stories:
-                    len_featured_stories = len(featured_stories)
-                for h in range(len_featured_stories):
-                    len_inside_stories = self.len_inside_stories()
-                    for j in range(len_inside_stories):
+                while btn_next_stories:
+                    btn_next_stories = self.press_next_store_button()
+                    if btn_next_stories:
                         self.obtain_data_and_download(profile, resources)
                         btn_next_stories = self.press_next_store_button()
                         if btn_next_stories:
                             btn_next_stories.click()
                             self.pause_store()
-                            self.logger.info(f'count stories: {j}/{len_inside_stories}')
             else:
                 path = f'{resources}/{profile}/{self.stores}/'
                 path_file = self.name_file(path)
                 self.get_src_for_download(path_file, profile)
-                self.logger.info('it"s just a story')
-        self.logger.info('actually no exists stories')
+        self.logger.info('end step stories')

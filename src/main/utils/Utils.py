@@ -7,9 +7,6 @@ logger = Logger('[           Utils           ]')
 def create_folder_if_not_exists(path):
     if not os.path.exists(path):
         os.makedirs(path)
-        logger.info(f"folder created in {path}")
-    else:
-        logger.info(f"the folder already exists in {path}")
 
 
 def increment_filename(filepath):
