@@ -33,3 +33,11 @@ class WebDriver(ABC):
     @abstractmethod
     def all_by_css_selector(self, class_name: str, time):
         pass
+
+    @abstractmethod
+    def execute_script(self, script):
+        pass
+
+    @abstractmethod
+    def execute_script_to_div(self, script, element):
+        pass

@@ -18,3 +18,7 @@ def increment_filename(filepath):
         filepath = f"{base_path}_{i}{extension}"
         i += 1
     return filepath
+
+
+def exists_file(ruta_archivo):
+    return os.path.exists(ruta_archivo)

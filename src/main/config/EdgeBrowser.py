@@ -71,3 +71,15 @@ class EdgeBrowser(WebDriver, ABC):
                 EC.presence_of_all_elements_located((By.CSS_SELECTOR, class_name)))
         except:
             return False
+
+    def execute_script(self, script):
+        try:
+            return self.driver.execute_script(script)
+        except:
+            return False
+
+    def execute_script_to_div(self, script, element):
+        try:
+            return self.driver.execute_script(script, element)
+        except:
+            return False

@@ -1,6 +1,7 @@
 import time
 from src.main.utils.Utils import increment_filename
 import requests
+import urllib.request
 from src.main.config.WebDriver import WebDriver
 from src.main.config.Logger import Logger
 from src.main.utils.Constants import GENERAL_WAITING_TIME, GENERAL_EXPLICIT_WAIT_TIME
@@ -77,3 +78,11 @@ class Download:
                 self.web_driver.open(actual)
             else:
                 self.download_video(path_file, profile)
+
+    def img_posts(self, resources, profile, src, name):
+        try:
+            path = f"{resources}{profile}/{name}"
+            name_path = increment_filename(path)
+            urllib.request.urlretrieve(src, name_path)
+        except Exception as e:
+            self.logger.info(f"An error occurred while making the request to img posts: {e}")

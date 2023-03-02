@@ -82,22 +82,32 @@ class Stories:
         path_file = self.name_file(path)
         self.get_src_for_download(path_file, profile)
 
+    def press_next_button(self):
+        btn_next_stories = self.press_next_store_button()
+        if btn_next_stories:
+            btn_next_stories.click()
+            self.pause_store()
+        else:
+            pass
+
     def access_store(self, resources: str, profile: str, div_store: str):
         stores = self.web_driver.by_css_selector(div_store, self.stores_timeout)
         if stores:
             stores.click()
+            len_inside_stories = 1
             time.sleep(self.general_wait_time)
             self.pause_store()
             btn_next_stories = self.press_next_store_button()
-            if btn_next_stories:
-                while btn_next_stories:
-                    btn_next_stories = self.press_next_store_button()
-                    if btn_next_stories:
-                        self.obtain_data_and_download(profile, resources)
-                        btn_next_stories = self.press_next_store_button()
-                        if btn_next_stories:
-                            btn_next_stories.click()
-                            self.pause_store()
+            while btn_next_stories:
+                btn_next_stories = self.press_next_store_button()
+                if not btn_next_stories:
+                    break
+                if self.len_inside_stories():
+                    len_inside_stories = self.len_inside_stories()
+                for a in range(len_inside_stories):
+                    self.logger.info(f'stories: {a + 1}/{len_inside_stories}')
+                    self.obtain_data_and_download(profile, resources)
+                    self.press_next_button()
             else:
                 path = f'{resources}/{profile}/{self.stores}/'
                 path_file = self.name_file(path)
